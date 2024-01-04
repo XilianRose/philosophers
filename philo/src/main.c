@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/04 14:40:57 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/04 16:52:25 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ int	main(int argc, char **argv)
 	t_info	*info;
 
 	info = NULL;
+	if (gettimeofday(time, NULL) != 0)
+		return (1);
 	if (argc < 4)
-		return(printf("Not enough arguments given\n"), 1);
+		return (printf("Not enough arguments given\n"), 1);
 	else if (argc > 5)
-		return(printf("Too many arguments given\n"), 1);
+		return (printf("Too many arguments given\n"), 1);
 	if (parse_arguments(argc, argv, info) == 0)
-		return(printf("Invalid arguments given\n"), 1);
+		return (printf("Invalid arguments given\n"), 1);
 	return (0);
 }

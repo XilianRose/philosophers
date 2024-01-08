@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/04 18:08:13 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/08 12:39:23 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <stdio.h>
 # include <sys/time.h>
 
-# define SUCCES 0;
-# define FAILURE 1;
+# define OK 0;
+# define KO 1;
 
 typedef struct s_info
 {
@@ -28,11 +28,13 @@ typedef struct s_info
 	size_t			sleep;
 	size_t			no_eat;
 	struct timeval	*time;
+	pthread_t		*philos;
 	pthread_mutex_t	*chopsticks;
 }	t_info;
 
 //	utils
-int	ft_atoi(const char *str);
-int	ft_isdigit(int c);
+size_t	get_time(t_info *info);
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
 
 #endif

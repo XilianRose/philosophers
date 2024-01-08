@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/08 11:54:20 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/08 12:40:00 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parse_arguments(int argc, char **argv, t_info *info)
 		while (argv[i][j] != '\0')
 		{
 			if (ft_isdigit((int)argv[i][j]) == 0)
-				return (FAILURE);
+				return (KO);
 			j++;
 		}
 		i++;
@@ -37,7 +37,7 @@ int	parse_arguments(int argc, char **argv, t_info *info)
 		info->no_eat = ft_atoi(argv[5]);
 	else
 		info->no_eat = 0;
-	return (SUCCES);
+	return (OK);
 }
 
 int	main(int argc, char **argv)
@@ -46,12 +46,12 @@ int	main(int argc, char **argv)
 
 	info = NULL;
 	if (gettimeofday(time, NULL) != 0)
-		return (FAILURE);
+		return (KO);
 	if (argc < 4)
 		return (printf("Not enough arguments given\n"), 1);
 	else if (argc > 5)
 		return (printf("Too many arguments given\n"), 1);
 	if (parse_arguments(argc, argv, info) == 0)
 		return (printf("Invalid arguments given\n"), 1);
-	return (SUCCES);
+	return (OK);
 }

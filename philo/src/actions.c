@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/08 15:13:41 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/11 14:39:56 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,18 @@ void	grab(void *ptr)
 {
 	t_info	*info;
 	size_t	ms;
+	size_t	left;
+	size_t	right;
 
 	info = (t_info *)ptr;
-	if (pthread_mutex_lock(&info->chopsticks[x]))
+	left = x;
+	right = (left + 1) % info->no_philo;
+	if (pthread_mutex_lock(&info->chopsticks[left]))
 	{
 		ms = get_time(info);
 		printf("%i X has taken a chopstick", ms);
-		if (!pthread_mutex_lock(&info->chopsticks[(x + 1) % info->no_philo]))
-			pthread_mutex_unlock(&info->chopsticks[x]);
+		if (!pthread_mutex_lock(&info->chopsticks[right]))
+			pthread_mutex_unlock(&info->chopsticks[left]);
 		else
 		{
 			ms = get_time(info);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   actions.c                                          :+:    :+:            */
+/*   routine.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/11 14:39:56 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/17 16:10:19 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,62 @@
 
 void	grab(void *ptr)
 {
-	t_info	*info;
+	t_data	*data;
 	size_t	ms;
 	size_t	left;
 	size_t	right;
 
-	info = (t_info *)ptr;
+	data = (t_data *)ptr;
 	left = x;
-	right = (left + 1) % info->no_philo;
-	if (pthread_mutex_lock(&info->chopsticks[left]))
+	right = (left + 1) % data->no_philo;
+	if (pthread_mutex_lock(&data->chopsticks[left]))
 	{
-		ms = get_time(info);
+		ms = get_time(data);
 		printf("%i X has taken a chopstick", ms);
-		if (!pthread_mutex_lock(&info->chopsticks[right]))
-			pthread_mutex_unlock(&info->chopsticks[left]);
+		if (!pthread_mutex_lock(&data->chopsticks[right]))
+			pthread_mutex_unlock(&data->chopsticks[left]);
 		else
 		{
-			ms = get_time(info);
+			ms = get_time(data);
 			printf("%i X has taken a chopstick", ms);
 		}
 	}
-	eat(info);
+	eat(data);
 }
 
 void	eat(void *ptr)
 {
-	t_info	*info;
+	t_data	*data;
 	size_t	ms;
 
-	info = (t_info *)ptr;
-	ms = get_time(info);
+	data = (t_data *)ptr;
+	ms = get_time(data);
 	printf("%i X is eating", ms);
-	usleep(info->eat);
+	usleep(data->eat);
 }
 
 void	sleep(void *ptr)
 {
-	t_info	*info;
+	t_data	*data;
 	size_t	ms;
 
-	info = (t_info *)ptr;
-	ms = get_time(info);
+	data = (t_data *)ptr;
+	ms = get_time(data);
 	printf("%i X is sleeping", ms);
-	usleep(info->sleep);
+	usleep(data->sleep);
 }
 
 void	think(void *ptr)
 {
-	t_info	*info;
+	t_data	*data;
 	size_t	ms;
 
-	info = (t_info *)ptr;
-	ms = get_time(info);
+	data = (t_data *)ptr;
+	ms = get_time(data);
 	printf("%i X is thinking", ms);
+}
+
+void	routine(void)
+{
+	return ;
 }

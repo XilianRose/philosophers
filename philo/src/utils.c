@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/17 15:41:23 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/18 18:02:55 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ size_t	get_time(t_data *data)
 	struct timeval	*current;
 	size_t			ms;
 
-	if (gettimeofday(current, NULL) != 0)
+	if (gettimeofday(current, NULL) != OK)
 		return (0);
 	ms = (current->tv_sec - data->start_time->tv_sec) * 1000000 + \
 		(current->tv_usec - data->start_time->tv_usec) / 1000;
@@ -66,7 +66,17 @@ void	discard_chopsticks(t_data *data)
 	data->chopsticks = NULL;
 }
 
-void	clean_exit(t_data *data)
+void	clean_exit(t_data *data, t_philo *status)
 {
+	pthread_mutex_destroy(data->print_lock);
 	discard_chopsticks(data);
+	free(data->philos);
+	data->philos = NULL;
+}
+
+void	print_message(t_data *data, size_t timestamp, size_t nb, char *message)
+{
+	pthread_mutex_lock(data->print_lock);
+	printf("%i %i %s", timestamp, nb, message);
+	pthread_mutex_unlock(data->print_lock);
 }

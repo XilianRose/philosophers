@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/18 18:02:55 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/19 15:14:29 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,25 @@ int	ft_atoi(const char *str)
 	return (multiplier * num);
 }
 
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+	char	*d;
+	char	*s;
+
+	i = 0;
+	d = (char *)dst;
+	s = (char *)src;
+	if (dst == 0 && src == 0)
+		return ((void *)dst);
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return ((void *)dst);
+}
+
 size_t	get_time(t_data *data)
 {
 	struct timeval	*current;
@@ -50,33 +69,9 @@ size_t	get_time(t_data *data)
 	return (ms);
 }
 
-void	discard_chopsticks(t_data *data)
-{
-	size_t	i;
-
-	i = 0;
-	if (!data->chopsticks)
-		return ;
-	while (i < data->nb_philos)
-	{
-		pthread_mutex_destroy(&data->chopsticks[i]);
-		i++;
-	}
-	free(data->chopsticks);
-	data->chopsticks = NULL;
-}
-
-void	clean_exit(t_data *data, t_philo *status)
-{
-	pthread_mutex_destroy(data->print_lock);
-	discard_chopsticks(data);
-	free(data->philos);
-	data->philos = NULL;
-}
-
-void	print_message(t_data *data, size_t timestamp, size_t nb, char *message)
+void	print_message(t_data *data, size_t timestamp, size_t id, char *message)
 {
 	pthread_mutex_lock(data->print_lock);
-	printf("%i %i %s", timestamp, nb, message);
+	printf("%i %i %s ", timestamp, id, message);
 	pthread_mutex_unlock(data->print_lock);
 }

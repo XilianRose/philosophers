@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/18 18:03:13 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/19 17:16:51 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,32 @@
 # define OK 0
 # define KO 1
 
+typedef enum e_action
+{
+	EATING,
+	SLEEPING
+}	t_action;
+
 typedef struct s_philo
 {
-	size_t			nb;
+	t_data			*data_copy;
+	size_t			id;
 	size_t			last_eaten;
+	pthread_mutex_t	eaten_lock;
 	size_t			times_eaten;
 	pthread_mutex_t	*left_chopstick;
 	pthread_mutex_t	*right_chopstick;
-	// bool			died;
-	t_data			*data;
+	pthread_mutex_t	fatal_lock;
+	bool			fatality;
 }	t_philo;
 
 typedef struct s_data
 {
-	size_t			nb_philos;
+	size_t			total;
 	size_t			die_time;
 	size_t			eat_time;
 	size_t			sleep_time;
-	size_t			nb_eat;
+	size_t			full_at;
 	pthread_mutex_t	*print_lock;
 	pthread_mutex_t	*chopsticks;
 	struct timeval	*start_time;
@@ -49,16 +57,20 @@ typedef struct s_data
 int		parsing(int argc, char **argv);
 
 // initalization
-size_t	init_data(int argc, char **argv, t_data *data, pthread_t *philos);
+size_t	init_all(int argc, char **argv, t_data *data, t_philo *status);
 
 // routine
 void	routine(void *data);
 
-//	utils
-int		ft_atoi(const char *str);
-size_t	get_time(t_data *data);
+// free
+void	reset_status(t_data *data, t_philo *status, size_t max);
 void	discard_chopsticks(t_data *data);
 void	clean_exit(t_data *data, t_philo *status);
+
+//	utils
+int		ft_atoi(const char *str);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+size_t	get_time(t_data *data);
 void	print_message(t_data *data, size_t timestamp, size_t nb, char *message);
 
 #endif

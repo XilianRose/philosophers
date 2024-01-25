@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/11 14:41:14 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/18 16:03:37 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/25 17:46:41 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parsing(int argc, char **argv)
 	int		j;
 
 	i = 1;
-	while (i <= argc)
+	while (i < argc)
 	{
 		j = 0;
 		while (argv[i][j] != '\0')

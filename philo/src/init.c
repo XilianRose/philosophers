@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/19 16:51:28 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/25 18:08:41 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static size_t	init_status(t_data *data, t_philo *status)
 			&data->chopsticks[(i + 1) % data->total];
 		pthread_mutex_init(&status[i].fatal_lock, NULL);
 		status[i].fatality = false;
-		pthread_create(&data->philos[i], NULL, &routine, (void *)&status[i]);
 		i++;
 	}
 	return (OK);
@@ -94,7 +93,7 @@ size_t	init_all(int argc, char **argv, t_data *data, t_philo *status)
 		data->full_at = ft_atoi(argv[5]);
 	else
 		data->full_at = 0;
-	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(data->print_lock, NULL);
 	if (init_chopsticks(data) == KO)
 		return (printf("Malloc failure\n"), KO);
 	if (gettimeofday(data->start_time, NULL) != OK)

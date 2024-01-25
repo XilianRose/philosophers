@@ -6,11 +6,27 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/19 16:56:40 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/25 18:07:37 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	join_philos(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	if (!data->philos)
+		return ;
+	while (i < data->total)
+	{
+		pthread_join(data->philos[i], NULL);
+		i++;
+	}
+	free(data->philos);
+	data->philos = NULL;
+}
 
 static void	free_data_copy(t_data *data, t_philo *status, size_t max)
 {
@@ -70,9 +86,6 @@ void	clean_exit(t_data *data, t_philo *status)
 	pthread_mutex_destroy(data->print_lock);
 	discard_chopsticks(data);
 	reset_status(data, status, data->total);
-	if (!data->philos)
-		return ;
-	free(data->philos);
-	data->philos = NULL;
+	join_philos(data);
 	return ;
 }

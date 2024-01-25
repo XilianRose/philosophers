@@ -6,17 +6,17 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/19 15:14:29 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/25 18:07:28 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+size_t	ft_atoi(const char *str)
 {
-	int	i;
-	int	multiplier;
-	int	num;
+	size_t	i;
+	size_t	multiplier;
+	size_t	num;
 
 	i = 0;
 	multiplier = 1;
@@ -62,6 +62,7 @@ size_t	get_time(t_data *data)
 	struct timeval	*current;
 	size_t			ms;
 
+	current = NULL;
 	if (gettimeofday(current, NULL) != OK)
 		return (0);
 	ms = (current->tv_sec - data->start_time->tv_sec) * 1000000 + \
@@ -72,6 +73,6 @@ size_t	get_time(t_data *data)
 void	print_message(t_data *data, size_t timestamp, size_t id, char *message)
 {
 	pthread_mutex_lock(data->print_lock);
-	printf("%i %i %s ", timestamp, id, message);
+	printf("%zu %zu %s ", timestamp, id, message);
 	pthread_mutex_unlock(data->print_lock);
 }

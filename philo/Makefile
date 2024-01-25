@@ -6,7 +6,7 @@
 #    By: mstegema <mstegema@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/01/03 13:55:56 by mstegema      #+#    #+#                  #
-#    Updated: 2024/01/04 15:43:40 by mstegema      ########   odam.nl          #
+#    Updated: 2024/01/25 17:28:59 by mstegema      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,10 @@ BINDIR	= bin
 
 # sources
 SRCS	= $(SRCDIR)/main.c \
-		$(SRCDIR)/threading.c \
-		$(SRCDIR)/actions.c \
+		$(SRCDIR)/parsing.c \
+		$(SRCDIR)/init.c \
+		$(SRCDIR)/routine.c \
+		$(SRCDIR)/free.c \
 		$(SRCDIR)/utils.c
 
 # objects

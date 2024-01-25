@@ -6,11 +6,16 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/19 17:18:31 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/25 18:07:41 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+//	if ((status->data_copy->full_at != 0 && status->times_eaten < \
+//	status->data_copy->full_at) && (action != EATING && \
+//	(get_time(status->data_copy) - status->last_eaten) >= \
+//	status->data_copy->die_time))
 
 static bool	dying(t_philo *status, t_action action)
 {
@@ -20,7 +25,7 @@ static bool	dying(t_philo *status, t_action action)
 		pthread_mutex_unlock(&status->fatal_lock);
 		return (true);
 	}
-	if (action != EATING && (status->data_copy) - status->last_eaten >= \
+	if (action != EATING && get_time(status->data_copy) - status->last_eaten >= \
 	status->data_copy->die_time)
 	{
 		print_message(status->data_copy, get_time(status->data_copy), \
@@ -55,8 +60,6 @@ static size_t	eating(t_philo *status)
 	{
 		print_message(status->data_copy, get_time(status->data_copy), \
 		status->id, "grabbed a chopstick\n");
-		if (dying(status, EATING) == true)
-			return (pthread_mutex_unlock(status->left_chopstick), KO);
 		if (pthread_mutex_lock(status->right_chopstick))
 		{
 			status->last_eaten = get_time(status->data_copy);
@@ -64,6 +67,7 @@ static size_t	eating(t_philo *status)
 			status->id, "grabbed a chopstick\n");
 			print_message(status->data_copy, status->last_eaten, status->id, \
 			"is eating\n");
+			status->times_eaten++;
 			while (get_time(status->data_copy) - status->last_eaten < \
 			status->data_copy->eat_time)
 			{
@@ -75,10 +79,10 @@ static size_t	eating(t_philo *status)
 			pthread_mutex_unlock(status->right_chopstick);
 		}
 	}
-	return ;
+	return (OK);
 }
 
-void	routine(void *arg)
+void	*routine(void *arg)
 {
 	t_philo	*status;
 
@@ -88,11 +92,11 @@ void	routine(void *arg)
 	while (status->fatality == false)
 	{
 		if (eating(status) == KO)
-			return ;
+			return (NULL);
 		if (sleeping(status) == KO)
-			return ;
+			return (NULL);
 		print_message(status->data_copy, get_time(status->data_copy), \
 		status->id, "is thinking\n");
 	}
-	return ;
+	return (NULL);
 }

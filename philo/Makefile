@@ -6,7 +6,7 @@
 #    By: mstegema <mstegema@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/01/03 13:55:56 by mstegema      #+#    #+#                  #
-#    Updated: 2024/01/25 17:28:59 by mstegema      ########   odam.nl          #
+#    Updated: 2024/01/26 14:52:43 by mstegema      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@mkdir -p $(BINDIR)
-	@$(CC) $(OBJS) -o $(BINDIR)/$(NAME)
+	@$(CC) $(OBJS) $(CFLAGS) -o $(BINDIR)/$(NAME)
 	@echo "$(PURPLE)$(NAME)$(NC) has been created"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

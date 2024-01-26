@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/25 18:05:48 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/26 12:30:15 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_data
 	size_t			eat_time;
 	size_t			sleep_time;
 	size_t			full_at;
-	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*chopsticks;
 	struct timeval	*start_time;
 	pthread_t		*philos;
@@ -70,7 +70,7 @@ void	discard_chopsticks(t_data *data);
 void	clean_exit(t_data *data, t_philo *status);
 
 //	utils
-size_t	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 size_t	get_time(t_data *data);
 void	print_message(t_data *data, size_t timestamp, size_t nb, char *message);

@@ -6,16 +6,11 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 12:38:10 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 13:05:45 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-//	if ((status->data_copy->full_at != 0 && status->times_eaten < \
-//	status->data_copy->full_at) && (action != EATING && \
-//	(get_time(status->data_copy) - status->last_eaten) >= \
-//	status->data_copy->die_time))
 
 static bool	dying(t_philo *status, t_action action)
 {
@@ -73,21 +68,17 @@ static size_t	eating(t_philo *status)
 
 static size_t	grabbing(t_philo *status)
 {
-	if (pthread_mutex_lock(status->left_chopstick))
-	{
-		print_message(status->data_copy, get_time(status->data_copy), \
+	pthread_mutex_lock(status->left_chopstick);
+	print_message(status->data_copy, get_time(status->data_copy), \
 		status->id, "grabbed a chopstick\n");
-		if (pthread_mutex_lock(status->right_chopstick))
-		{
-			status->last_eaten = get_time(status->data_copy);
-			print_message(status->data_copy, get_time(status->data_copy), \
-			status->id, "grabbed a chopstick\n");
-			if (eating(status) == KO)
-				return (KO);
-			pthread_mutex_unlock(status->left_chopstick);
-			pthread_mutex_unlock(status->right_chopstick);
-		}
-	}
+	pthread_mutex_lock(status->right_chopstick);
+	status->last_eaten = get_time(status->data_copy);
+	print_message(status->data_copy, get_time(status->data_copy), \
+	status->id, "grabbed a chopstick\n");
+	if (eating(status) == KO)
+		return (KO);
+	pthread_mutex_unlock(status->left_chopstick);
+	pthread_mutex_unlock(status->right_chopstick);
 	return (OK);
 }
 

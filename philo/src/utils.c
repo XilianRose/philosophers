@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 12:32:52 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 12:51:06 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ size_t	get_time(t_data *data)
 
 	if (gettimeofday(&current, NULL) != OK)
 		return (0);
-	ms = (current.tv_sec - data->start_time.tv_sec) * 1000000 + \
-		(current.tv_usec - data->start_time.tv_usec) / 1000;
+	ms = (((current.tv_sec - data->start_time.tv_sec) * 1000) + \
+		((current.tv_usec - data->start_time.tv_usec) / 1000));
 	return (ms);
 }
 

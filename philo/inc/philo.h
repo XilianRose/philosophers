@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 12:31:10 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 15:13:43 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_philo
 int		parsing(int argc, char **argv);
 
 // initalization
-size_t	init_all(int argc, char **argv, t_data *data, t_philo *status);
+t_philo	*init_all(int argc, char **argv, t_data *data, t_philo *status);
 
 // routine
 void	*routine(void *data);

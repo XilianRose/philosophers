@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 12:31:33 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 15:13:10 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ static size_t	init_philos(t_data *data, t_philo *status)
 	i = 0;
 	data->philos = (pthread_t *)malloc((data->total) * sizeof(pthread_t));
 	if (!data->philos)
-		return (clean_exit(data, status), KO);
+		return (printf("Malloc failure\n"), clean_exit(data, status), KO);
 	while (i < data->total)
 	{
-		pthread_create(&data->philos[i], NULL, &routine, (void *)&status[i]);
+		if (pthread_create(&data->philos[i], NULL, &routine, \
+		(void *)&status[i]) < 0)
+			return (printf("Pthread create failure\n"), \
+			clean_exit(data, status), KO);
 		i++;
 	}
 	return (OK);
@@ -39,33 +42,31 @@ t_data	*copy_data(t_data *data)
 	return (temp);
 }
 
-static size_t	init_status(t_data *data, t_philo **status)
+t_philo	*init_status(t_data *data, t_philo *status)
 {
-	t_philo	*temp;
 	size_t	i;
 
 	i = 0;
-	temp = (t_philo *)malloc((data->total) * sizeof(t_philo));
-	if (!temp)
-		return (discard_chopsticks(data), KO);
+	status = (t_philo *)malloc((data->total) * sizeof(t_philo));
+	if (!status)
+		return (discard_chopsticks(data), NULL);
 	while (i < data->total)
 	{
-		temp[i].data_copy = copy_data(data);
-		if (temp[i].data_copy == NULL)
-			return (reset_status(data, *status, i), KO);
-		temp[i].id = i + 1;
-		temp[i].last_eaten = 0;
-		pthread_mutex_init(&temp[i].eaten_lock, NULL);
-		temp[i].times_eaten = 0;
-		temp[i].left_chopstick = &data->chopsticks[i];
-		temp[i].right_chopstick = \
+		status[i].data_copy = copy_data(data);
+		if (status[i].data_copy == NULL)
+			return (reset_status(data, status, i), NULL);
+		status[i].id = i + 1;
+		status[i].last_eaten = 0;
+		pthread_mutex_init(&status[i].eaten_lock, NULL);
+		status[i].times_eaten = 0;
+		status[i].left_chopstick = &data->chopsticks[i];
+		status[i].right_chopstick = \
 			&data->chopsticks[(i + 1) % data->total];
-		pthread_mutex_init(&temp[i].fatal_lock, NULL);
-		temp[i].fatality = false;
+		pthread_mutex_init(&status[i].fatal_lock, NULL);
+		status[i].fatality = false;
 		i++;
 	}
-	*status = temp;
-	return (OK);
+	return (status);
 }
 
 static size_t	init_chopsticks(t_data *data)
@@ -85,7 +86,7 @@ static size_t	init_chopsticks(t_data *data)
 	return (OK);
 }
 
-size_t	init_all(int argc, char **argv, t_data *data, t_philo *status)
+t_philo	*init_all(int argc, char **argv, t_data *data, t_philo *status)
 {
 	data->total = (size_t)ft_atoi(argv[1]);
 	data->die_time = (size_t)ft_atoi(argv[2]);
@@ -97,12 +98,13 @@ size_t	init_all(int argc, char **argv, t_data *data, t_philo *status)
 		data->full_at = 0;
 	pthread_mutex_init(&data->print_lock, NULL);
 	if (init_chopsticks(data) == KO)
-		return (printf("Malloc failure\n"), KO);
+		return (printf("Malloc failure\n"), NULL);
 	if (gettimeofday(&data->start_time, NULL) != OK)
-		return ((printf("TOD failure\n"), KO));
-	if (init_status(data, &status) == KO)
-		return (printf("Malloc failure\n"), KO);
+		return ((printf("TOD failure\n"), NULL));
+	status = init_status(data, status);
+	if (status == NULL)
+		return (printf("Malloc failure\n"), NULL);
 	if (init_philos(data, status) == KO)
-		return (printf("Malloc failure\n"), KO);
-	return (OK);
+		return (NULL);
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/26 12:32:51 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 14:52:55 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ static void	join_philos(t_data *data)
 		return ;
 	while (i < data->total)
 	{
-		pthread_join(data->philos[i], NULL);
+		if (pthread_join(data->philos[i], NULL) < 0)
+		{
+			printf("Pthread join failure\n");
+			return ;
+		}
 		i++;
 	}
 	free(data->philos);

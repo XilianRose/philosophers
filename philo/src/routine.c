@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 13:05:45 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 14:36:35 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static size_t	grabbing(t_philo *status)
 {
 	pthread_mutex_lock(status->left_chopstick);
 	print_message(status->data_copy, get_time(status->data_copy), \
-		status->id, "grabbed a chopstick\n");
+	status->id, "grabbed a chopstick\n");
 	pthread_mutex_lock(status->right_chopstick);
 	status->last_eaten = get_time(status->data_copy);
 	print_message(status->data_copy, get_time(status->data_copy), \
@@ -88,7 +88,7 @@ void	*routine(void *arg)
 
 	status = (t_philo *)arg;
 	if (status->id % 2 != 0)
-		usleep(status->data_copy->eat_time / 2);
+		usleep(50);
 	while (status->fatality == false)
 	{
 		if (grabbing(status) == KO)

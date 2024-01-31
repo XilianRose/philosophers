@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/25 18:12:40 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 13:01:53 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv)
 	t_data		data;
 	t_philo		status;
 
-	if (argc < 4 || argc > 5)
+	if (argc < 5 || argc > 6)
 		return (printf("Invalid number of arguments given\n"), KO);
 	if (parsing(argc, argv) == KO)
 		return (printf("Invalid arguments given\n"), KO);

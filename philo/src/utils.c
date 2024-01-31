@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/26 12:33:28 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 12:32:52 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,13 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 
 size_t	get_time(t_data *data)
 {
-	struct timeval	*current;
+	struct timeval	current;
 	size_t			ms;
 
-	current = NULL;
-	if (gettimeofday(current, NULL) != OK)
+	if (gettimeofday(&current, NULL) != OK)
 		return (0);
-	ms = (current->tv_sec - data->start_time->tv_sec) * 1000000 + \
-		(current->tv_usec - data->start_time->tv_usec) / 1000;
+	ms = (current.tv_sec - data->start_time.tv_sec) * 1000000 + \
+		(current.tv_usec - data->start_time.tv_usec) / 1000;
 	return (ms);
 }
 

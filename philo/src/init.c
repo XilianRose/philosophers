@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/26 15:01:45 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 12:31:33 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ size_t	init_all(int argc, char **argv, t_data *data, t_philo *status)
 	pthread_mutex_init(&data->print_lock, NULL);
 	if (init_chopsticks(data) == KO)
 		return (printf("Malloc failure\n"), KO);
-	if (gettimeofday(data->start_time, NULL) != OK)
+	if (gettimeofday(&data->start_time, NULL) != OK)
 		return ((printf("TOD failure\n"), KO));
 	if (init_status(data, &status) == KO)
 		return (printf("Malloc failure\n"), KO);

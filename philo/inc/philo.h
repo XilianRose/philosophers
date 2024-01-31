@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/26 12:30:15 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/01/31 12:31:10 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_data
 	size_t			full_at;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*chopsticks;
-	struct timeval	*start_time;
+	struct timeval	start_time;
 	pthread_t		*philos;
 }	t_data;
 

@@ -6,7 +6,7 @@
 #    By: mstegema <mstegema@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/01/03 13:55:56 by mstegema      #+#    #+#                  #
-#    Updated: 2024/01/26 14:52:43 by mstegema      ########   odam.nl          #
+#    Updated: 2024/02/01 20:35:34 by mstegema      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS	= -Wall -Wextra -Werror
 HEADER	= -I $(INCDIR)
 
 ifdef DEBUG
-CFLAGS	+= -g #-fsanitize=address
+CFLAGS	+= -g -fsanitize=thread #-fsanitize=address
 endif
 
 # directories

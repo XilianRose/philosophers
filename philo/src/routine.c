@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 20:05:51 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 20:35:16 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,16 @@ static size_t	grabbing(t_philo *status)
 
 void	*routine(void *arg)
 {
-	t_philo	*status;
+	t_philo			*status;
+	pthread_mutex_t	*temp;
 
 	status = (t_philo *)arg;
 	if (status->id % 2 != 0)
-		usleep(status->data_copy->eat_time * 500);
+	{
+		temp = status->left_chopstick;
+		status->left_chopstick = status->right_chopstick;
+		status->right_chopstick = temp;
+	}
 	while (1)
 	{
 		if (grabbing(status) == KO)

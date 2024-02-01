@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 11:25:33 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 12:19:54 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	reset_status(t_philo *status, size_t max)
 		status[i].data_copy = NULL;
 		pthread_mutex_destroy(&status[i].eaten_lock);
 		pthread_mutex_destroy(&status[i].fatal_lock);
+		i++;
 	}
 	free(status);
 	status = NULL;
@@ -70,9 +71,9 @@ void	discard_chopsticks(t_data *data)
 
 void	clean_exit(t_data *data, t_philo *status)
 {
+	join_philos(data);
 	pthread_mutex_destroy(&data->print_lock);
 	discard_chopsticks(data);
 	reset_status(status, data->total);
-	join_philos(data);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 19:35:38 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 20:04:44 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void	clean_exit(t_data *data, t_philo *status)
 		pthread_mutex_destroy(data->fatal_lock);
 		free(data->fatal_lock);
 		data->fatal_lock = NULL;
+	}
+	if (data->fatality)
+	{
+		free(data->fatality);
+		data->fatality = NULL;
 	}
 	discard_chopsticks(data);
 	reset_status(status, data->total);

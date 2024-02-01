@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 11:22:53 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 14:59:44 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 typedef enum e_action
 {
 	EATING,
-	SLEEPING
+	SLEEPING,
+	THINKING
 }	t_action;
 
 typedef struct s_data
@@ -73,6 +74,7 @@ void	clean_exit(t_data *data, t_philo *status);
 int		ft_atoi(const char *str);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 size_t	get_time(t_data *data);
-void	print_message(t_data *data, size_t timestamp, size_t nb, char *message);
+void	print_message(t_philo *status, size_t timestamp, size_t nb, \
+		char *message);
 
 #endif

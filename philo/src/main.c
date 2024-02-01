@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 15:09:06 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 19:48:56 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,17 @@ static void	welfare_check(t_data *data, t_philo *status)
 	{
 		if (i == data->total)
 			i = 0;
-		pthread_mutex_lock(&status[i].fatal_lock);
-		if (status[i].fatality == true || \
+		pthread_mutex_lock(&status[i].dead_lock);
+		if (status[i].dead == true || \
 		(data->full_at > 0 && everyone_full(data, status) == true))
 		{
-			pthread_mutex_unlock(&status[i].fatal_lock);
-			i = 0;
-			while (i < data->total)
-			{
-				pthread_mutex_lock(&status[i].fatal_lock);
-				status[i].fatality = true;
-				pthread_mutex_unlock(&status[i].fatal_lock);
-				i++;
-			}
+			pthread_mutex_unlock(&status[i].dead_lock);
+			pthread_mutex_lock(data->fatal_lock);
+			*(data->fatality) = true;
+			pthread_mutex_unlock(data->fatal_lock);
 			return ;
 		}
-		pthread_mutex_unlock(&status[i].fatal_lock);
+		pthread_mutex_unlock(&status[i].dead_lock);
 		i++;
 	}
 }

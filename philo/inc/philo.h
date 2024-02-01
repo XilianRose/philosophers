@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 14:59:44 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 19:27:12 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ typedef struct s_data
 	size_t			eat_time;
 	size_t			sleep_time;
 	size_t			full_at;
-	pthread_mutex_t	print_lock;
+	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	*fatal_lock;
+	bool			*fatality;
 	pthread_mutex_t	*chopsticks;
 	struct timeval	start_time;
 	pthread_t		*philos;
@@ -52,8 +54,8 @@ typedef struct s_philo
 	size_t			times_eaten;
 	pthread_mutex_t	*left_chopstick;
 	pthread_mutex_t	*right_chopstick;
-	pthread_mutex_t	fatal_lock;
-	bool			fatality;
+	pthread_mutex_t	dead_lock;
+	bool			dead;
 }	t_philo;
 
 // parsing

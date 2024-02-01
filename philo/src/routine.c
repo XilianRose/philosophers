@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 15:21:15 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 20:00:13 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 static bool	dying(t_philo *status, t_action action)
 {
-	pthread_mutex_lock(&status->fatal_lock);
-	if (status->fatality == true)
+	pthread_mutex_lock(status->data_copy->fatal_lock);
+	if (*(status->data_copy->fatality) == true)
 	{
-		pthread_mutex_unlock(&status->fatal_lock);
+		pthread_mutex_unlock(status->data_copy->fatal_lock);
 		return (true);
 	}
-	pthread_mutex_unlock(&status->fatal_lock);
+	pthread_mutex_unlock(status->data_copy->fatal_lock);
 	if (action != EATING && get_time(status->data_copy) - status->last_eaten >= \
 	status->data_copy->die_time)
 	{
-		print_message(status, get_time(status->data_copy), \
-		status->id, "died\n");
-		pthread_mutex_lock(&status->fatal_lock);
-		status->fatality = true;
-		pthread_mutex_unlock(&status->fatal_lock);
+		pthread_mutex_lock(&status->dead_lock);
+		status->dead = true;
+		pthread_mutex_unlock(&status->dead_lock);
+		pthread_mutex_lock(status->data_copy->print_lock);
+		printf("%zu %zu died\n", get_time(status->data_copy), status->id);
+		pthread_mutex_unlock(status->data_copy->print_lock);
 		return (true);
 	}
 	return (false);
@@ -61,17 +62,20 @@ static size_t	eating(t_philo *status)
 	status->data_copy->eat_time)
 	{
 		if (dying(status, EATING) == true)
+		{
+			pthread_mutex_unlock(status->left_chopstick);
+			pthread_mutex_unlock(status->right_chopstick);
 			return (KO);
+		}
 		usleep(5);
 	}
 	return (OK);
 }
 
+
 static size_t	grabbing(t_philo *status)
 {
 	pthread_mutex_lock(status->left_chopstick);
-	print_message(status, get_time(status->data_copy), \
-	status->id, "grabbed a chopstick\n");
 	if (status->data_copy->total == 1)
 	{
 		while (1)
@@ -81,19 +85,21 @@ static size_t	grabbing(t_philo *status)
 			usleep(5);
 		}
 	}
+	if (dying(status, THINKING) == true)
+		return (pthread_mutex_unlock(status->left_chopstick), KO);
+	print_message(status, get_time(status->data_copy), \
+	status->id, "has taken a fork\n");
 	pthread_mutex_lock(status->right_chopstick);
+	if (dying(status, THINKING) == true)
+		return (pthread_mutex_unlock(status->left_chopstick), \
+		pthread_mutex_unlock(status->right_chopstick), KO);
 	status->last_eaten = get_time(status->data_copy);
 	print_message(status, get_time(status->data_copy), \
-	status->id, "grabbed a chopstick\n");
+	status->id, "has taken a fork\n");
 	if (eating(status) == KO)
-	{
-		pthread_mutex_unlock(status->left_chopstick);
-		pthread_mutex_unlock(status->right_chopstick);
 		return (KO);
-	}
-	pthread_mutex_unlock(status->left_chopstick);
-	pthread_mutex_unlock(status->right_chopstick);
-	return (OK);
+	return (pthread_mutex_unlock(status->left_chopstick), \
+		pthread_mutex_unlock(status->right_chopstick), OK);
 }
 
 void	*routine(void *arg)
@@ -102,8 +108,8 @@ void	*routine(void *arg)
 
 	status = (t_philo *)arg;
 	if (status->id % 2 != 0)
-		usleep(500);
-	while (status->fatality == false)
+		usleep(status->data_copy->eat_time * 1000);
+	while (1)
 	{
 		if (grabbing(status) == KO)
 			return (NULL);
@@ -111,6 +117,8 @@ void	*routine(void *arg)
 			return (NULL);
 		print_message(status, get_time(status->data_copy), \
 		status->id, "is thinking\n");
+		if (dying(status, THINKING) == true)
+			return (NULL);
 	}
 	return (NULL);
 }

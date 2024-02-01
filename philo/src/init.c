@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 11:23:01 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 19:34:29 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,26 @@ t_philo	*init_status(t_data *data, t_philo *status)
 		status[i].left_chopstick = &data->chopsticks[i];
 		status[i].right_chopstick = \
 			&data->chopsticks[(i + 1) % data->total];
-		pthread_mutex_init(&status[i].fatal_lock, NULL);
-		status[i].fatality = false;
+		pthread_mutex_init(&status[i].dead_lock, NULL);
+		status[i].dead = false;
 		i++;
 	}
 	return (status);
 }
 
-static size_t	init_chopsticks(t_data *data)
+static size_t	init_locks(t_data *data)
 {
 	size_t	i;
 
 	i = 0;
+	data->print_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!data->print_lock)
+		return (KO);
+	pthread_mutex_init(data->print_lock, NULL);
+	data->fatal_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!data->fatal_lock)
+		return (KO);
+	pthread_mutex_init(data->fatal_lock, NULL);
 	data->chopsticks = (pthread_mutex_t *) \
 		malloc((data->total) * sizeof(pthread_mutex_t));
 	if (!data->chopsticks)
@@ -96,8 +104,11 @@ t_philo	*init_all(int argc, char **argv, t_data *data, t_philo *status)
 		data->full_at = (size_t)ft_atoi(argv[5]);
 	else
 		data->full_at = 0;
-	pthread_mutex_init(&data->print_lock, NULL);
-	if (init_chopsticks(data) == KO)
+	data->fatality = (bool *)malloc(sizeof(bool));
+	if (!data->fatality)
+		return (printf("Malloc failure\n"), NULL);
+	*(data->fatality) = false;
+	if (init_locks(data) == KO)
 		return (printf("Malloc failure\n"), NULL);
 	if (gettimeofday(&data->start_time, NULL) != OK)
 		return ((printf("TOD failure\n"), NULL));

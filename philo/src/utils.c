@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 15:02:36 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 19:48:59 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ size_t	get_time(t_data *data)
 void	print_message(t_philo *status, size_t timestamp, size_t id, \
 		char *message)
 {
-	pthread_mutex_lock(&status->data_copy->print_lock);
-	pthread_mutex_lock(&status->fatal_lock);
-	if (status->fatality == true)
+	pthread_mutex_lock(status->data_copy->print_lock);
+	pthread_mutex_lock(status->data_copy->fatal_lock);
+	if (*(status->data_copy->fatality) == true)
 	{
-		pthread_mutex_unlock(&status->fatal_lock);
-		pthread_mutex_unlock(&status->data_copy->print_lock);
+		pthread_mutex_unlock(status->data_copy->fatal_lock);
+		pthread_mutex_unlock(status->data_copy->print_lock);
 		return ;
 	}
-	pthread_mutex_unlock(&status->fatal_lock);
-	printf("%zu %zu %s ", timestamp, id, message);
-	pthread_mutex_unlock(&status->data_copy->print_lock);
+	pthread_mutex_unlock(status->data_copy->fatal_lock);
+	printf("%zu %zu %s", timestamp, id, message);
+	pthread_mutex_unlock(status->data_copy->print_lock);
 }

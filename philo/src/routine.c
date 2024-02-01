@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 20:00:13 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 20:05:51 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ static size_t	eating(t_philo *status)
 static size_t	grabbing(t_philo *status)
 {
 	pthread_mutex_lock(status->left_chopstick);
+	if (dying(status, THINKING) == true)
+		return (pthread_mutex_unlock(status->left_chopstick), KO);
+	print_message(status, get_time(status->data_copy), \
+	status->id, "has taken a fork\n");
 	if (status->data_copy->total == 1)
 	{
 		while (1)
@@ -85,10 +89,6 @@ static size_t	grabbing(t_philo *status)
 			usleep(5);
 		}
 	}
-	if (dying(status, THINKING) == true)
-		return (pthread_mutex_unlock(status->left_chopstick), KO);
-	print_message(status, get_time(status->data_copy), \
-	status->id, "has taken a fork\n");
 	pthread_mutex_lock(status->right_chopstick);
 	if (dying(status, THINKING) == true)
 		return (pthread_mutex_unlock(status->left_chopstick), \
@@ -108,7 +108,7 @@ void	*routine(void *arg)
 
 	status = (t_philo *)arg;
 	if (status->id % 2 != 0)
-		usleep(status->data_copy->eat_time * 1000);
+		usleep(status->data_copy->eat_time * 500);
 	while (1)
 	{
 		if (grabbing(status) == KO)

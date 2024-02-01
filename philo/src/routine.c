@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 14:36:35 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 11:12:33 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*routine(void *arg)
 
 	status = (t_philo *)arg;
 	if (status->id % 2 != 0)
-		usleep(50);
+		usleep(status->data_copy->eat_time / 2);
 	while (status->fatality == false)
 	{
 		if (grabbing(status) == KO)

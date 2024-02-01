@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 14:52:55 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 11:25:33 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,35 +32,18 @@ static void	join_philos(t_data *data)
 	data->philos = NULL;
 }
 
-static void	free_data_copy(t_data *data, t_philo *status, size_t max)
+void	reset_status(t_philo *status, size_t max)
 {
 	size_t	i;
 
 	i = 0;
+
 	if (!status)
 		return ;
-	while (i < max || i < data->total)
+	while (i < max)
 	{
-		if (!status[i].data_copy)
-			return ;
 		free(status[i].data_copy);
 		status[i].data_copy = NULL;
-		i++;
-	}
-	return ;
-}
-
-void	reset_status(t_data *data, t_philo *status, size_t max)
-{
-	size_t	i;
-
-	i = 0;
-
-	if (!status)
-		return ;
-	free_data_copy(status->data_copy, status, max);
-	while (i < data->total)
-	{
 		pthread_mutex_destroy(&status[i].eaten_lock);
 		pthread_mutex_destroy(&status[i].fatal_lock);
 	}
@@ -89,7 +72,7 @@ void	clean_exit(t_data *data, t_philo *status)
 {
 	pthread_mutex_destroy(&data->print_lock);
 	discard_chopsticks(data);
-	reset_status(data, status, data->total);
+	reset_status(status, data->total);
 	join_philos(data);
 	return ;
 }

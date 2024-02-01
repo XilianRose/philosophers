@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 15:13:43 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 11:22:53 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_philo	*init_all(int argc, char **argv, t_data *data, t_philo *status);
 void	*routine(void *data);
 
 // free
-void	reset_status(t_data *data, t_philo *status, size_t max);
+void	reset_status(t_philo *status, size_t max);
 void	discard_chopsticks(t_data *data);
 void	clean_exit(t_data *data, t_philo *status);
 

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/01/31 15:13:10 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/01 11:23:01 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_philo	*init_status(t_data *data, t_philo *status)
 	{
 		status[i].data_copy = copy_data(data);
 		if (status[i].data_copy == NULL)
-			return (reset_status(data, status, i), NULL);
+			return (reset_status(status, i), NULL);
 		status[i].id = i + 1;
 		status[i].last_eaten = 0;
 		pthread_mutex_init(&status[i].eaten_lock, NULL);

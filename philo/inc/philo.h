@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 19:27:12 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 18:16:52 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@
 
 # define OK 0
 # define KO 1
-
-typedef enum e_action
-{
-	EATING,
-	SLEEPING,
-	THINKING
-}	t_action;
 
 typedef struct s_data
 {

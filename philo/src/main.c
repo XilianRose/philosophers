@@ -6,13 +6,36 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 19:48:56 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 18:19:29 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	everyone_full(t_data *data, t_philo *status)
+static bool	is_everyone_alive(t_data *data, t_philo *status)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->total)
+	{
+		pthread_mutex_lock(&status[i].eaten_lock);
+		if (get_time(status->data_copy) - status[i].last_eaten >= \
+		data->die_time)
+		{
+			pthread_mutex_lock(status->data_copy->print_lock);
+			printf("%zu %zu died\n", get_time(status->data_copy), status[i].id);
+			pthread_mutex_unlock(status->data_copy->print_lock);
+			pthread_mutex_unlock(&status[i].eaten_lock);
+			return (false);
+		}
+		pthread_mutex_unlock(&status[i].eaten_lock);
+		i++;
+	}
+	return (true);
+}
+
+static bool	is_everyone_full(t_data *data, t_philo *status)
 {
 	size_t	i;
 
@@ -37,17 +60,14 @@ static void	welfare_check(t_data *data, t_philo *status)
 	{
 		if (i == data->total)
 			i = 0;
-		pthread_mutex_lock(&status[i].dead_lock);
-		if (status[i].dead == true || \
-		(data->full_at > 0 && everyone_full(data, status) == true))
+		if (is_everyone_alive(data, status) == false || \
+		(data->full_at > 0 && is_everyone_full(data, status) == true))
 		{
-			pthread_mutex_unlock(&status[i].dead_lock);
 			pthread_mutex_lock(data->fatal_lock);
 			*(data->fatality) = true;
 			pthread_mutex_unlock(data->fatal_lock);
 			return ;
 		}
-		pthread_mutex_unlock(&status[i].dead_lock);
 		i++;
 	}
 }

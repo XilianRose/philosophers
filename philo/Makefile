@@ -6,7 +6,7 @@
 #    By: mstegema <mstegema@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/01/03 13:55:56 by mstegema      #+#    #+#                  #
-#    Updated: 2024/02/01 20:35:34 by mstegema      ########   odam.nl          #
+#    Updated: 2024/02/02 18:06:22 by mstegema      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,4 +68,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all debug clean fclean re

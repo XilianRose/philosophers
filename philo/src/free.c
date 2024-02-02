@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 20:04:44 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 10:43:55 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	reset_status(t_philo *status, size_t max)
 	size_t	i;
 
 	i = 0;
-
 	if (!status)
 		return ;
 	while (i < max)

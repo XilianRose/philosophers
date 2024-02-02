@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 15:42:34 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 20:35:16 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 10:43:38 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static size_t	eating(t_philo *status)
 	}
 	return (OK);
 }
-
 
 static size_t	grabbing(t_philo *status)
 {

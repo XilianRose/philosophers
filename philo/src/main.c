@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:47:20 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/02 18:19:29 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/05 11:07:13 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ static bool	is_everyone_alive(t_data *data, t_philo *status)
 		if (get_time(status->data_copy) - status[i].last_eaten >= \
 		data->die_time)
 		{
+			pthread_mutex_lock(data->fatal_lock);
+			*(data->fatality) = true;
+			pthread_mutex_unlock(data->fatal_lock);
 			pthread_mutex_lock(status->data_copy->print_lock);
 			printf("%zu %zu died\n", get_time(status->data_copy), status[i].id);
 			pthread_mutex_unlock(status->data_copy->print_lock);
@@ -44,10 +47,16 @@ static bool	is_everyone_full(t_data *data, t_philo *status)
 	{
 		pthread_mutex_lock(&status[i].eaten_lock);
 		if (status[i].times_eaten < data->full_at)
-			return (pthread_mutex_unlock(&status[i].eaten_lock), false);
+		{
+			pthread_mutex_unlock(&status[i].eaten_lock);
+			return (false);
+		}
 		pthread_mutex_unlock(&status[i].eaten_lock);
 		i++;
 	}
+	pthread_mutex_lock(data->fatal_lock);
+	*(data->fatality) = true;
+	pthread_mutex_unlock(data->fatal_lock);
 	return (true);
 }
 
@@ -60,14 +69,11 @@ static void	welfare_check(t_data *data, t_philo *status)
 	{
 		if (i == data->total)
 			i = 0;
-		if (is_everyone_alive(data, status) == false || \
-		(data->full_at > 0 && is_everyone_full(data, status) == true))
-		{
-			pthread_mutex_lock(data->fatal_lock);
-			*(data->fatality) = true;
-			pthread_mutex_unlock(data->fatal_lock);
+		if (is_everyone_alive(data, status) == false)
 			return ;
-		}
+		if (data->full_at > 0 && is_everyone_full(data, status) == true)
+			return ;
+		usleep(data->die_time);
 		i++;
 	}
 }

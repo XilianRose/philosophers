@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 16:14:02 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 19:48:59 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/05 09:51:47 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ size_t	get_time(t_data *data)
 	return (ms);
 }
 
-void	print_message(t_philo *status, size_t timestamp, size_t id, \
-		char *message)
+void	print_message(t_philo *status, size_t timestamp, char *message)
 {
 	pthread_mutex_lock(status->data_copy->print_lock);
 	pthread_mutex_lock(status->data_copy->fatal_lock);
@@ -81,6 +80,6 @@ void	print_message(t_philo *status, size_t timestamp, size_t id, \
 		return ;
 	}
 	pthread_mutex_unlock(status->data_copy->fatal_lock);
-	printf("%zu %zu %s", timestamp, id, message);
+	printf("%zu %zu %s", timestamp, status->id, message);
 	pthread_mutex_unlock(status->data_copy->print_lock);
 }

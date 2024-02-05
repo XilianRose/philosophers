@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 14:15:36 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/01 19:34:29 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 19:14:38 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ t_philo	*init_status(t_data *data, t_philo *status)
 		status[i].left_chopstick = &data->chopsticks[i];
 		status[i].right_chopstick = \
 			&data->chopsticks[(i + 1) % data->total];
-		pthread_mutex_init(&status[i].dead_lock, NULL);
-		status[i].dead = false;
 		i++;
 	}
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/03 15:09:45 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/02 18:16:52 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/05 09:52:08 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ typedef struct s_philo
 	size_t			times_eaten;
 	pthread_mutex_t	*left_chopstick;
 	pthread_mutex_t	*right_chopstick;
-	pthread_mutex_t	dead_lock;
-	bool			dead;
 }	t_philo;
 
 // parsing
@@ -69,7 +67,6 @@ void	clean_exit(t_data *data, t_philo *status);
 int		ft_atoi(const char *str);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 size_t	get_time(t_data *data);
-void	print_message(t_philo *status, size_t timestamp, size_t nb, \
-		char *message);
+void	print_message(t_philo *status, size_t timestamp, char *message);
 
 #endif

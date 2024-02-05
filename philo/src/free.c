@@ -6,7 +6,7 @@
 /*   By: mstegema <mstegema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 14:17:12 by mstegema      #+#    #+#                 */
-/*   Updated: 2024/02/02 10:43:55 by mstegema      ########   odam.nl         */
+/*   Updated: 2024/02/02 19:14:49 by mstegema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	reset_status(t_philo *status, size_t max)
 		free(status[i].data_copy);
 		status[i].data_copy = NULL;
 		pthread_mutex_destroy(&status[i].eaten_lock);
-		pthread_mutex_destroy(&status[i].dead_lock);
 		i++;
 	}
 	free(status);
